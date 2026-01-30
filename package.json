@@ -1,0 +1,36 @@
+{
+    "name": "remote-ctx",
+    "version": "0.0.0",
+    "module": "src/index.ts",
+    "type": "module",
+    "scripts": {
+        "dev": "rslib build --config ./build/rslib.config.ts --watch  ",
+        "build": "rslib build --config ./build/rslib.config.ts",
+        "build:bundler": "bun run build/build.bun.ts",
+        "build:extension": "bun run build/build-extension.ts",
+        "test": "vitest",
+        "publish": "bun ./build/check-npm-user.ts && npm publish",
+        "check-git-user": "bun ./build/check-git-user.ts"
+    },
+    "devDependencies": {
+        "@rslib/core": "^0.19.3",
+        "@types/bun": "latest",
+        "@types/node": "^24",
+        "chalk": "5.6.2",
+        "tinybench": "6.0.0",
+        "vitest": "^4"
+    },
+    "peerDependencies": {
+        "typescript": "^5"
+    },
+    "publishConfig": {
+        "registry": "https://registry.npmjs.org/"
+    },
+    "license": "ISC",
+    "dependencies": {
+        "@types/ws": "8.18.1",
+        "comlink": "4.4.2",
+        "synckit": "0.11.12",
+        "ws": "8.19.0"
+    }
+}

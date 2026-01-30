@@ -1,0 +1,32 @@
+{
+    "manifest_version": 3,
+    "name": "RemoteCtx Host",
+    "version": "1.0.0",
+    "description": "Inject RemoteCtxHost into websites for remote debugging.",
+    "permissions": ["storage", "scripting", "activeTab"],
+    "host_permissions": ["<all_urls>"],
+    "action": {
+        "default_popup": "popup.html",
+        "default_title": "RemoteCtx Host Settings",
+        "default_icon": {
+            "128": "icon-128.png"
+        }
+    },
+    "icons": {
+        "128": "icon-128.png",
+        "512": "icon-512.png"
+    },
+    "content_scripts": [
+        {
+            "matches": ["<all_urls>"],
+            "js": ["content.js"],
+            "run_at": "document_start"
+        }
+    ],
+    "web_accessible_resources": [
+        {
+            "resources": ["injected.js"],
+            "matches": ["<all_urls>"]
+        }
+    ]
+}
