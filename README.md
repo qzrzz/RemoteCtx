@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./RemoteCtx.png" height="346.5">
+  <img src="./RemoteCtx.png" height="200">
 </p>
 
 # RemoteCtx
