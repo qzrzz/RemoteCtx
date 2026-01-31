@@ -1,47 +1,53 @@
 # RemoteCtx
 
-一个可以远程调试 JavaScript 环境的库，只要目标环境支持 `WebSocket`，就可以把目标上下文的对象暴露到另一个工作上下文（例如一个 NodeJs 脚本中），也可以在工作上下文调用目标上下文的函数。
+一个可以远程调试另一 JavaScript 上下文的工具。
+
+只要目标环境支持 `WebSocket`，就可以把目标上下文的对象暴露到另一个上下文，例如把浏览器中的网页的上下文暴露到 NodeJs 中，这样你可以在 NodeJS 中像访问本地对象一样访问远程上下文。
+
+也可以在工作上下文调用目标上下文的函数。
 
 ## 示例
 
-** Figma 插件的 JavaScript 环境 **
+**Figma 插件的 JavaScript 环境**
 
 ```ts
 import { RemoteCtxHost } from "remote-ctx"
 
 const remoteCtxHost = new RemoteCtxHost({
-    url: "http://localhost:3000",
+    // 本地 RemoteCtx 的服务地址
+    url: "http://localhost:16633",
 })
-
-// 默认暴漏 window 对象，你也可以添加其他对象
-remoteCtxHost.expose({})
 ```
 
-** NodeJs 环境 **
+**NodeJs 环境**
 
 ```ts
 import { RemoteCtx } from "remote-ctx"
 
-const figmaCtx = new RemoteCtx({ port: 3000 })
-await figmaCtx.ready // 等待 figmaCtx 准备好
+const figmaCtx = new RemoteCtx({ port: 16633 })
+await figmaCtx.ready // 等待 Figma 上下文准备好
 
 let host = figmaCtx.host
 
 // 读取属性 (同步)
-host.window.innerHeight // 读取 figmaCtx 环境的 window.innerHeight
+host.window.innerHeight // 读取 Figma 网页上下文的 window.innerHeight
 
 // 设置属性 (同步)
-host.window.document.title = "Deubg 2"
+host.window.document.title = "Debug 2"
 
 // 调用函数 (同步)
-host.window.alert("Hello World")
+host.alert("Hello World")
 
 // 调用函数 (异步)
 await host.window.fetch("https://jsonplaceholder.typicode.com/todos/1")
 
 // 远程执行
-host.window.eval("console.log('Hello World')")
+host.eval("console.log('Hello World')")
 ```
+
+## 浏览器扩展
+
+在 `extension` 目录下是一个浏览器，扩展可以帮助把 `RemoteCtxHost` 注入到目标网页中。
 
 ## 实现原理
 
@@ -77,4 +83,4 @@ host.window.eval("console.log('Hello World')")
 
 ### Class 原型链的处理
 
-在 Host 端，会尽可能的还原 Class 的原型链，
+会尽可能的把 Class 的原型链还原到远端。
